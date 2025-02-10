@@ -120,6 +120,41 @@ app.post('/login', async (req, res) => {
   }
 });
 
+
+// Hotel schema
+const hotelSchema = new mongoose.Schema({
+  hotelImage: String,
+  hotelPlace: String,
+  hotelRating: Number,
+  hotelTime: String
+});
+
+const Hotel = mongoose.model('Hotel', hotelSchema);
+
+// Route to get all hotels
+app.get('/hotels', async (req, res) => {
+  try {
+    const hotels = await Hotel.find(); // Fetch all hotels from MongoDB
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch hotels', error: error.message });
+  }
+});
+
+// Route to add a hotel
+app.post('/hotels', async (req, res) => {
+  try {
+    const { hotelImage, hotelPlace, hotelRating, hotelTime } = req.body;
+    const newHotel = new Hotel({ hotelImage, hotelPlace, hotelRating, hotelTime });
+    await newHotel.save();
+    res.json({ success: true, message: 'Hotel added successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to add hotel', error: error.message });
+  }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
