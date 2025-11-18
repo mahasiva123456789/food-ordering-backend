@@ -53,7 +53,6 @@ mongoose.connect(MONGODB_URI, {
 .then(() => console.log("Connected to MongoDB successfully"))
 .catch(err => console.error("MongoDB connection error:", err));
 
-// Enhanced schemas with additional fields
 const itemSchema = new mongoose.Schema({
   name: { 
     type: String, 
